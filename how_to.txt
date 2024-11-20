@@ -1,0 +1,52 @@
+
+Unix instructions
+on the encryption server terminal (create new), run:
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+
+cd encryption_server
+python app_encrypt.py (this starts the server for encryption)
+
+on the decryption_server terminal (create a new one), run:
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+cd decryption_server
+python app_decrypt.py (this starts the server for decryption)
+
+on the encryption_app terminal (create a new one):
+    cd encryption-app
+    npm install (only the first time you run the code or if any changes have been done to the code)
+    npm run serve (to run the app and view it on the browser)
+
+    open chrome and type: http://localhost:8080/
+
+
+Windows instructions:
+
+on the encryption server terminal (create new), run:
+    python -m venv .venv
+    .venv/Scripts/activate
+    pip install -r requirements.txt
+
+cd encryption_server
+python app_encrypt.py (this starts the server for encryption)
+
+on the decryption_server terminal (create a new one), run:
+     python -m venv .venv
+    .venv/Scripts/activate
+    pip install -r requirements.txt
+cd decryption_server
+python app_decrypt.py (this starts the server for decryption)
+
+on the encryption_app terminal (create a new one):
+    cd encryption-app
+    npm install (only the first time you run the code or if any changes have been done to the code)
+    npm run serve (to run the app and view it on the browser)
+
+    open chrome and type: http://localhost:8080/
+
+
+    algorithm
+    

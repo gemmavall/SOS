@@ -1,0 +1,132 @@
+<template>
+    <div class="app-container">
+      <h1>Message Encryption/Decryption</h1>
+      
+      <!-- Encryption Section -->
+      <section>
+        <h2>Encrypt a Message</h2>
+        <form @submit.prevent="encryptMessage">
+          <label for="message">Enter Message:</label>
+          <textarea id="message" v-model="message" placeholder="Write your message here"></textarea>
+          <button type="submit">Encrypt</button>
+        </form>
+        <div v-if="encryptedData">
+          <h3>Encrypted Data:</h3>
+          <p><strong>Encrypted Message:</strong> {{ encryptedData.encrypted_message }}</p>
+          <p><strong>IV:</strong> {{ encryptedData.iv }}</p>
+          <p><strong>Key ID:</strong> {{ encryptedData.key_id }}</p>
+        </div>
+      </section>
+  
+      <!-- Decryption Section -->
+      <section>
+        <h2>Decrypt a Message</h2>
+        <form @submit.prevent="decryptMessage">
+          <label for="encryptedMessage">Encrypted Message:</label>
+          <textarea id="encryptedMessage" v-model="decryptInput.encrypted_message" placeholder="Paste encrypted message"></textarea>
+  
+          <label for="iv">IV:</label>
+          <input id="iv" v-model="decryptInput.iv" placeholder="Paste IV" />
+  
+          <label for="keyId">Key ID:</label>
+          <input id="keyId" v-model="decryptInput.key_id" placeholder="Paste Key ID" />
+  
+          <button type="submit">Decrypt</button>
+        </form>
+        <div v-if="decryptedMessage">
+          <h3>Decrypted Message:</h3>
+          <p>{{ decryptedMessage }}</p>
+        </div>
+      </section>
+    </div>
+  </template>
+  
+  <script>
+  import axios from "axios";
+  
+  export default {
+    data() {
+      return {
+        message: "",
+        encryptedData: null,
+        decryptInput: {
+          encrypted_message: "",
+          iv: "",
+          key_id: "",
+        },
+        decryptedMessage: "",
+      };
+    },
+    methods: {
+      async encryptMessage() {
+        try {
+          // http://<ENCRYPT_SERVER_IP>:5000/encrypt
+          const response = await axios.post("http://localhost:5000/encrypt", {
+            message: this.message,
+          });
+          this.encryptedData = response.data;
+        } catch (error) {
+          console.error("Error encrypting message:", error);
+          alert("Failed to encrypt the message.");
+        }
+      },
+      async decryptMessage() {
+        try {
+          //http://<DECRYPT_SERVER_IP>:5001/decrypt
+          const response = await axios.post("http://localhost:5001/decrypt", {
+            encrypted_message: this.decryptInput.encrypted_message,
+            iv: this.decryptInput.iv,
+            key_id: this.decryptInput.key_id,
+          });
+          this.decryptedMessage = response.data.message;
+        } catch (error) {
+          console.error("Error decrypting message:", error);
+          alert("Failed to decrypt the message.");
+        }
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .app-container {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  textarea,
+  input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  section {
+    margin-bottom: 40px;
+  }
+  
+  h1,
+  h2 {
+    color: #333;
+  }
+  </style>
+  
